@@ -1,0 +1,15 @@
+ * {
+  text-align: center;
+}
+
+header, .instructions {
+  border: 2px, black, solid;
+  background-color: gray;
+  max-width: 800px;
+  margin: 30px auto 100px auto;
+  padding: 15px;  
+}
+
+body {
+  background-color: lightgray;
+}
