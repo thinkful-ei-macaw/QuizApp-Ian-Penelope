@@ -89,9 +89,22 @@ b. Season 2
 c. Season 4
 d. Season 3
 
+
+
 function renderPage() {
   //this function will render the page based on the data in DATA.
   console.log('renderPage working');
+}
+
+function startScreen() {
+  //this will generate the start screen HTML
+  $('body').html(`<header>
+  <h1>Welcome to the Walking Dead</h1>
+</header>
+<p class="instructions">
+  Click Begin Quiz To See How Much You Know About Characters From The Walking Dead
+</p>
+<input type="button" class="start-quiz js-start-button" value="begin">`)
 }
 
 function generateQuestion() {
@@ -129,6 +142,7 @@ function displayScore() {
   //this function will be triggered when the questions have all been asked likely triggered by a counter reaching 10.  this will change the DOM to display the total score of the user and give them a prompt to begin a new quiz to try again.
 }
 function main() {
+  newQuiz()
   nextQuestion();
   checkAnswer();
 }
