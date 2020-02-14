@@ -13,81 +13,101 @@
 
 const DATA = [
   {
-    question: 'What's Carl Grimes Mother's name?',
+    question: 'What\'s Carl Grimes Mother\'s name?',
     a : 'Lori',
     b : 'Carol',
     c : 'Michonne',
-    d : 'Rosita'
-    questionNum : 1
-},
-  {
-    question : 'How did the Merle escape the roof top?'
-    a : 'jump off the roof',
-    b : 'screams for help'
+    d : 'Rosita',
+    questionNum : 1,
+    id : cuid(),
+    correctAnswer : 'Lori'
   },
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
-  {},
+  {
+    question : 'How did the Merle escape the roof top?',
+    a : 'jump off the roof',
+    b : 'screams for help',
+    c :  'He does\'t die',
+    d  : 'Cuts off his hand',
+    questionNum : 2,
+    id : cuid(),
+    correctAnswer : 'Cuts off his hand'
+  },
+  { question: 'In what season, did Morgan notice Rick Grimes was still Alive?',
+    a: 'Season 2',
+    b: 'Season 3',
+    c: 'Season 4',
+    d: 'Season 5',
+    questionNum : 3,
+    id : cuid(),
+    correctAnswer : 'Season 5'
+  },
+  { question:'Who did Lori had an affair with?',
+    a: 'Daryl',
+    b: 'Hershel',
+    c: 'Shane',
+    d: 'Merle',
+    questionNum : 4,
+    id : cuid(),
+    correctAnswer : 'Shane'
+  },
+  { question: 'When Carl got shot, who injured him?',
+    a:'Otis',
+    b:'Maggi' ,
+    c: 'Glenn',
+    d:'T-dog',
+    questionNum : 5,
+    id : cuid(),
+    correctAnswer : 'Otis'
+  },
+  { question: 'How does Lori die?',
+    a: 'Drowning',
+    b: 'child-birth',
+    c: 'gun shot',
+    d: 'walkers attack.', 
+    questionNum : 6,
+    id : cuid(),
+    correctAnswer : 'child-birth' 
+  },
+  {question: 'Who get left behind at the farm?',
+    a:'Glenn',
+    b: 'Maggie',
+    c: 'Beth',
+    d: 'Andrea',
+    questionNum : 7,
+    id : cuid(),
+    correctAnswer : 'Andrea'
+  },
+  { question: 'In what season did the group run into Terminus?',
+    a: 'Season 1',
+    b:  'Season 3',
+    c:  'Season 5',
+    d:  'Season 4',
+    questionNum : 8,
+    id : cuid(),
+    correctAnswer : 'Season 5'
+  },
+  {question: 'How did the Governor kill Hershal?',
+    a: 'gun shot to the head',
+    b: 'Governor fed him to the Walkers',
+    c: 'Governor cuts his head off',
+    d:  'Governor threw him the pit',
+    questionNum : 9,
+    id : cuid(),
+    correctAnswer : 'Governor cuts his head off'
+  },
+  {question: 'In what season did Rick renounce Leadership of the Group?',
+    a: 'Season 1',
+    b: 'Season 2',
+    c: 'Season 4',
+    d: 'Season 3',
+    questionNum : 10,
+    id : cuid(),
+    correctAnswer : 'Season 4'
+  },
+  {questionNumber: 8},
+  {score: 0}
 
 ];
-2.How did the Merle escape the roof top?
-a.jump off the roof  
-b.screams for help, 
-c.he doesnt, 
-d.cuts off his hand
-
-3.In what season , did Morgan notice Rick Grimes was still alive?
-a. Season 2
-b.Season 3 
-c.Season 4 
-d.Season 5
-
-4.Who did Lori had an affair with?
-a. Daryl
-b. Hershel
-c. Shane
-d. Merle
-
-5. When Carl got shot, who injured him?
-a.Otis
-b.Maggie 
-c.Glenn
-d.T-dog
-
-6. How does Lori die?
-a. Drowning
-b. child-birth
-c. gun shot
-d. walkers attack
-
-7.Who get left behind at the farm?
-a. Glenn
-b. Maggie
-c. Beth
-d. Andrea
-
-8. In what season did the group run into Terminus?
-a. season 1
-b.season 3
-c. season 5
-d. season 4
-
-9. How did Hersel by the Governor?
-a. gun shot to the head
-b. Governor fed him to the Walkers
-c. Governor cuts his head off
-d. Governor threw him the pit 
-
-10. In what season did Rick renounce as "Leader" of the Group?
-a. Season 1
-b. Season 2
-c. Season 4
-d. Season 3
 
 
 
@@ -104,22 +124,46 @@ function startScreen() {
 <p class="instructions">
   Click Begin Quiz To See How Much You Know About Characters From The Walking Dead
 </p>
-<input type="button" class="start-quiz js-start-button" value="begin">`)
+<input type="button" class="start-quiz js-start-button" value="begin">`);
 }
 
 function generateQuestion() {
   //call on the data for a question in the DATA array and use it to generate HTML of each question including the question they are on out of the total
+  let i = DATA[10].questionNumber;
+  $('body').html(`<p class = "question-box">Question 1</p>
+  <div class = "question-box">
+    <p>${DATA[i].question}</p>
+      <input type="radio" class="option">
+        <label for="answerA">${DATA[i].a} </label><br>
+      <input type="radio" class="option">
+        <label for="answerB">${DATA[i].b}</label><br>
+      <input type="radio" class="option">
+        <label for="answerC">${DATA[i].c}</form><label>
+      <input type="radio" class="option">
+        <label for="answerD">${DATA[i].d}</form><label>
+  </div>`);
   console.log('generateQuestion working');
 }
 
 function answerQuestions() {
   // allow the user to answer a question with radio buttons and send the value selsected to the checkAnswer function
   console.log('answerQuestions working'); 
-  $(document).on('click', '.button')
+  $(document).on('click', '.option', function(event) {
+    console.log('WORKING');
+    let result = checkAnswer(event);
+    if (result === true) {
+      displayCorrect()
+    } else {
+      displayWrong()
+    }
+  });
 }
 
-function checkAnswer() {
+function checkAnswer(event) {
   //take the data from answer question and compare it with the correct answer corresponding in DATA and trigger either displayCorrect or displayWrong depending
+  let i = DATA[10].questionNumber;
+  let ans = this.closest('label');
+  console.log(ans);
   console.log('checkAnswer working');
 }
 
@@ -141,9 +185,14 @@ function nextQuestion() {
 function displayScore() {
   //this function will be triggered when the questions have all been asked likely triggered by a counter reaching 10.  this will change the DOM to display the total score of the user and give them a prompt to begin a new quiz to try again.
 }
+
+function updateScore() {
+  //add to the score
+}
 function main() {
-  newQuiz()
+  startScreen();
   nextQuestion();
   checkAnswer();
+  answerQuestions();
 }
 $(main);

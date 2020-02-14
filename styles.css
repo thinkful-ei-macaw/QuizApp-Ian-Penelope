@@ -7,9 +7,11 @@ header, .instructions, .question-box {
   background-color: gray;
   max-width: 800px;
   margin: 30px auto 100px auto;
-  padding: 15px;  
+  padding: 15px; 
+  height: 500px; 
 }
 
 body {
+  background-image: url('https://www.slantmagazine.com/wp-content/uploads/2015/07/tv_walkingdead0301.jpg');
   background-color: lightgray;
 }
