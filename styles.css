@@ -11,5 +11,6 @@ header, .instructions, .question-box {
 }
 
 body {
+  background-image: url('https://images.app.goo.gl/bmTBiZEPcDXS5oKG9');
   background-color: lightgray;
 }
