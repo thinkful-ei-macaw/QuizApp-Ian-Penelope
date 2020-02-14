@@ -14,7 +14,7 @@
 const DATA = {
   questions : [
   {
-    question: `What's Carl Grimes Mother's name?`,
+    question: `What is the name of the mother of Carl Grimes?`,
     answers: [
       'Lori',
       'Carol',
@@ -111,80 +111,100 @@ const DATA = {
   },
 ],
   questionNumber: 5,
-  score: 0
+  score: 0,
+  quizStart : true,
 
 };
 
 
+//render functions
 
-function renderPage() {
+function renderPage(component) {
   //this function will render the page based on the data in DATA.
-  if (DATA.questionNumber === 0) {
-    let page = startScreen()
-    $('body').html(page)
-  }
+    $('main').html(component);
   console.log('renderPage working');
 }
 
+// html generating functions
 function startScreen() {
   //this will generate the start screen HTML
-  return `<header>
+  let page =  `<header>
   <h1>Welcome to the Walking Dead</h1>
 </header>
 <p class="instructions">
   Click Begin Quiz To See How Much You Know About Characters From The Walking Dead
 </p>
 <input type="button" class="start-quiz js-start-button" value="begin">`;
+renderPage(page)
 }
 
 function generateQuestion() {
   //call on the data for a question in the DATA array and use it to generate HTML of each question including the question they are on out of the total
   let i = DATA.questionNumber;
-  $('body').html(`<p class = "question-box">Question 1</p>
+  let page =  `<p class = "question-box">Question 1</p>
   <form class = "question-box">
     <p>${DATA.questions[i].question}</p>
-        <label for="answerA">${DATA.questions[i].answers[0]}
-          <input type="radio" class="option" id = "answerA" name= "answers">
-        </label>
+        <label for="answerA">${DATA.questions[i].answers[0]}<input type="radio" class="option" id = "answerA" name= "answers"></label>
       
-        <label for="answerB">${DATA.questions[i].answers[1]}
-          <input type="radio" class="option" id = "answerB" name = "answers">
-        </label>
+        <label for="answerB">${DATA.questions[i].answers[1]}<input type="radio" class="option" id = "answerB" name = "answers"></label>
       
-        <label for="answerC">${DATA.questions[i].answers[2]}
-          <input type="radio" class="option" id = "AnswerC" name= "answers">
-        <label>
+        <label for="answerC">${DATA.questions[i].answers[2]}<input type="radio" class="option" id = "answerC" name= "answers"></label>
       
-        <label for="answerD">${DATA.questions[i].answers[3]}
-          <input type="radio" class="option" id = "answerD" name = "answers">
-        <label>
-  </form>`);
+        <label for="answerD">${DATA.questions[i].answers[3]}<input type="radio" class="option" id = "answerD" name = "answers" value="${DATA.questions[i].answers[3]}"><label>
+  </form>
+  <input type = "submit" id = "submit">`;
+  renderPage(page)
   console.log('generateQuestion working');
 }
 
-function handleRadioClicks() {
+function generateCorrect() {
+  let page = `<header>
+  <h1>
+    Correct!!!
+  </h1>
+  <div>
+  <p>
+    You got the answer correct. Great job!
+  </p>
+  <p>youre score is currently 8 points</p>
+  <p>you are on question 9/10</p>
+</div>
+</header>
+</body>`
+renderPage(page)
+  // display HTML for correct answer including a button to go to the next answer
+  console.log('generateCorrect working');
+}
+
+function generateWrong() {
+  //display the HTML for the wrong answer page including the correct answer in the designated spot and a button to go to the next answer
+  console.log('generateWrong working');
+}
+
+function displayScore() {
+  //this function will be triggered when the questions have all been asked likely triggered by a counter reaching 10.  this will change the DOM to display the total score of the user and give them a prompt to begin a new quiz to try again.
+}
+
+// event handlers
+
+function handleQuestionSubmit() {
   $(document).on('click','.option' ,function(e) {
-    console.log('handleRadioClicks WORKING');
+    console.log('handleQuestionSubmit WORKING');
     let id = $(e.target).attr('id');
-    let selectedAnswer = $(`label[for='${id}']`).text();
+    let selectedAnswer = $(`label[for='${id}']`).text().trim();
     answerQuestions(selectedAnswer)
     }
   );
 }
 
-function answerQuestions(answer) {
 
-  let result = checkAnswer(answer);
-  console.log(answer)
-  if (result === true) {
-    displayCorrect();
-  } else {
-    displayWrong()
-  }
-  console.log('answerQuestions working'); 
-  
+function nextQuestion() {
+  DATA.questionNumber++;
+  renderPage();
+  console.log('nextQuestion working');
 }
 
+//misc functions
 function checkAnswer(answer) {
   let i = DATA.questionNumber;
   let correct = DATA.questions[i].correctAnswer
@@ -194,34 +214,33 @@ function checkAnswer(answer) {
   console.log('checkAnswer working');
 }  // event selector not working
 
-function displayCorrect() {
-  // display HTML for correct answer including a button to go to the next answer
-  console.log('displayCorrect working');
-}
-
-function displayWrong() {
-  //display the HTML for the wrong answer page including the correct answer in the designated spot and a button to go to the next answer
-  console.log('displayWrong working');
-}
-
-function nextQuestion() {
-  //listen to the buttons on displayWrong and displayRight pages and trigger generateQuestion
-  console.log('nextQuestion working');
-}
-
-function displayScore() {
-  //this function will be triggered when the questions have all been asked likely triggered by a counter reaching 10.  this will change the DOM to display the total score of the user and give them a prompt to begin a new quiz to try again.
-}
-
 function updateScore() {
   //add to the score
 }
+
+
+function answerQuestions(answer) {
+
+  let result = checkAnswer(answer);
+  console.log(answer)
+  if (result === true) {
+    generateCorrect();
+  } else {
+    generateWrong()
+  }
+  console.log('answerQuestions working'); 
+  
+}
+
+function reset() {
+  DATA.questionNumber = 0;
+  DATA.quizStart = false;
+}
+
 function main() {
   startScreen();
-  nextQuestion();
   checkAnswer();
   answerQuestions();
-  handleRadioClicks();
-  renderPage();
+  handleQuestionSubmit();
 }
 $(main);
