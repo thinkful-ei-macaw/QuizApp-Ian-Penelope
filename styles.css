@@ -5,10 +5,11 @@
 header, .instructions, .question-box {
   border: 2px, black, solid;
   background-color: gray;
-  max-width: 800px;
+  max-width: 300px;
   margin: 30px auto 100px auto;
   padding: 15px; 
-  height: 500px; 
+  height: 100px; 
+
 }
 
 body {
