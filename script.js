@@ -110,7 +110,7 @@ const DATA = {
     correctAnswer : 'Season 4'
   },
 ],
-  questionNumber: 5,
+  questionNumber: 0,
   score: 0,
   quizStart : true,
 
@@ -134,14 +134,14 @@ function startScreen() {
 <p class="instructions">
   Click Begin Quiz To See How Much You Know About Characters From The Walking Dead
 </p>
-<input type="button" class="start-quiz js-start-button" value="begin">`;
+<input type="button" class="start-quiz" value="begin">`;
 renderPage(page)
 }
 
 function generateQuestion() {
   //call on the data for a question in the DATA array and use it to generate HTML of each question including the question they are on out of the total
   let i = DATA.questionNumber;
-  let page =  `<p class = "question-box">Question 1</p>
+  let page =  `<p class = "question-box">Question ${DATA.questionNumber + 1}</p>
   <form class = "question-box">
     <p>${DATA.questions[i].question}</p>
         <label for="answerA">${DATA.questions[i].answers[0]}<input type="radio" class="option" id = "answerA" name= "answers"></label>
@@ -158,31 +158,57 @@ function generateQuestion() {
 }
 
 function generateCorrect() {
+  DATA.score++;
   let page = `<header>
-  <h1>
+  <h1 class="green">
     Correct!!!
   </h1>
+  </header>
   <div>
   <p>
     You got the answer correct. Great job!
   </p>
-  <p>youre score is currently 8 points</p>
-  <p>you are on question 9/10</p>
+  <p>youre score is currently ${DATA.score} points</p>
+  <p>you are on question ${DATA.questionNumber + 1}/10</p>
 </div>
-</header>
-</body>`
+<input type = "submit" id = "next-question" value = 'next'>`
 renderPage(page)
   // display HTML for correct answer including a button to go to the next answer
+
   console.log('generateCorrect working');
 }
 
 function generateWrong() {
   //display the HTML for the wrong answer page including the correct answer in the designated spot and a button to go to the next answer
+  let i = DATA.questionNumber
+  let page = `<header>
+  <h1 class = "red">Wrong Answer</h1>
+  <div>
+    <p>
+      Sorry that was the Wrong answer the correct answer is ${DATA.questions[i].correctAnswer}
+    </p>
+    <p>your score is currently ${DATA.score} points</p>
+    <p>you are on question ${DATA.questionNumber + 1}/10</p>
+  </div>
+  <button>
+</header>
+<input type = "button" id = "next-question" value = 'next'>`
+renderPage(page)
   console.log('generateWrong working');
 }
 
 function displayScore() {
   //this function will be triggered when the questions have all been asked likely triggered by a counter reaching 10.  this will change the DOM to display the total score of the user and give them a prompt to begin a new quiz to try again.
+
+  let page = `<header><h1>
+  All done!
+</h1></header>
+<div class="instructions">
+<p >you scored ${DATA.score} points</p>
+<p>press the button start a new quiz</p>
+<input type="button" class="restart" value="reset">
+</div>`
+renderPage(page)
 }
 
 // event handlers
@@ -196,12 +222,28 @@ function handleQuestionSubmit() {
     }
   );
 }
+function handleStartQuiz() {
+  $(document).on('click', '.start-quiz', function() {
+    generateQuestion()
+  })
+}
 
+function handleNextQuestion() {
+  $(document).on('click', '#next-question', function(e) {
+    DATA.questionNumber++;
+    console.log('handleNextQuestion')
+    if (DATA.questionNumber > 9) {
+      displayScore()
+    } else {generateQuestion()}
+  })
+}
 
-function nextQuestion() {
-  DATA.questionNumber++;
-  renderPage();
-  console.log('nextQuestion working');
+function handleReset() {
+  
+  $(document).on('click', '.restart', function(e) {
+    reset();
+    startScreen();
+  })
 }
 
 //misc functions
@@ -216,6 +258,7 @@ function checkAnswer(answer) {
 
 function updateScore() {
   //add to the score
+  DATA.score++
 }
 
 
@@ -225,6 +268,7 @@ function answerQuestions(answer) {
   console.log(answer)
   if (result === true) {
     generateCorrect();
+    updateScore
   } else {
     generateWrong()
   }
@@ -238,9 +282,11 @@ function reset() {
 }
 
 function main() {
+  handleReset()
+  handleNextQuestion()
+  handleStartQuiz();
   startScreen();
   checkAnswer();
-  answerQuestions();
   handleQuestionSubmit();
 }
 $(main);
