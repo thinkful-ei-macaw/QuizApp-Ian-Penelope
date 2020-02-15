@@ -164,7 +164,7 @@ function generateCorrect() {
     Correct!!!
   </h1>
   </header>
-  <div>
+  <div class ="box">
   <p>
     You got the answer correct. Great job!
   </p>
