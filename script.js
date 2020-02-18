@@ -28,7 +28,7 @@ const DATA = {
     answers: [
       'jump off the roof',
       'screams for help',
-      'He does\'t die',
+      `He doesn't`,
       'Cuts off his hand'],
     id : cuid(),
     correctAnswer : 'Cuts off his hand'

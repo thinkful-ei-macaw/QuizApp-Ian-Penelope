@@ -3,6 +3,10 @@
   box-sizing: border-box;
    
 }
+
+p, h1, label {
+  color: #d2d6d8;
+}
 body
 {
   background-position:top;
@@ -12,8 +16,8 @@ body
 header, .instructions, .question-box, .box
 {
   border-style: inset;
-  background-color: lightslategray;
-  width: 400px;
+  background-color: #4f6d49;
+  width: auto;
   margin: 30px auto 100px auto;
   padding: 15px; 
   height: auto;
@@ -24,7 +28,7 @@ header, .instructions, .question-box, .box
 .question-box
 {
   border-style:inset;
-  background-color: lightslategray;
+  background-color: ##4f6d49;
 }
 
 body {
@@ -34,41 +38,40 @@ body {
 }
 
 .red {
-  color: red;
+  color: #e67f7f;
 }
 
 .green { 
-  color: green;
+  color: #acf3ac;
 }
 
 .button {
   display:block;
   margin-left: auto;
   margin-right:auto;
-	box-shadow: 3px 4px 0px 0px #4b7340;
-	background:linear-gradient(to bottom, #8da894 5%, #7ba863 100%);
-	background-color:#8da894;
-	border-radius:15px;
-	border:1px solid #6ca672;
+	box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+	background-color:#79bbff;
+	border-radius:6px;
+	border:1px solid #84bbf3;
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Arial;
-	font-size:17px;
-	padding:7px 25px;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
 	text-decoration:none;
-	text-shadow:0px 1px 0px #2f6627;
+	text-shadow:0px 1px 0px #528ecc;
 }
 .button:hover {
-	background:linear-gradient(to bottom, #7ba863 5%, #8da894 100%);
-	background-color:#7ba863;
+	background:linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
+	background-color:#378de5;
 }
 .button:active {
 	position:relative;
 	top:1px;
 }
-
-
 
 .question {
   list-style-type: none;
