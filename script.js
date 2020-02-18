@@ -14,7 +14,7 @@
 const DATA = {
   questions : [
   {
-    question: `What is the name of the mother of Carl Grimes?`,
+    question: `What is the name of Carl Grimes' mother?`,
     answers: [
       'Lori',
       'Carol',
@@ -87,7 +87,7 @@ const DATA = {
     'Season 4'
   ],
     id : cuid(),
-    correctAnswer : 'Season 5'
+    correctAnswer : 'Season 4'
   },
   {question: 'How did the Governor kill Hershal?',
     answers: [
@@ -122,7 +122,6 @@ const DATA = {
 function renderPage(component) {
   //this function will render the page based on the data in DATA.
     $('main').html(component);
-  console.log('renderPage working');
 }
 
 // html generating functions
@@ -133,28 +132,37 @@ function startScreen() {
 </header>
 <p class="instructions">
   Click Begin Quiz To See How Much You Know About Characters From The Walking Dead
-</p>
-<input type="button" class="start-quiz" value="begin">`;
+
+<input type="button" id="start-quiz" value="begin" class="button">
+  </p>`;
 renderPage(page)
 }
 
 function generateQuestion() {
   //call on the data for a question in the DATA array and use it to generate HTML of each question including the question they are on out of the total
   let i = DATA.questionNumber;
-  let page =  `<p class = "question-box">Question ${DATA.questionNumber + 1}</p>
+  let page =  `
+  <header>
+    <h1>Question ${DATA.questionNumber + 1}</h1> 
+  </header>
   <form class = "question-box">
     <p>${DATA.questions[i].question}</p>
-        <label for="answerA">${DATA.questions[i].answers[0]}<input type="radio" class="option" id = "answerA" name= "answers"></label>
-      
-        <label for="answerB">${DATA.questions[i].answers[1]}<input type="radio" class="option" id = "answerB" name = "answers"></label>
-      
-        <label for="answerC">${DATA.questions[i].answers[2]}<input type="radio" class="option" id = "answerC" name= "answers"></label>
-      
-        <label for="answerD">${DATA.questions[i].answers[3]}<input type="radio" class="option" id = "answerD" name = "answers" value="${DATA.questions[i].answers[3]}"><label>
-  </form>
-  <input type = "submit" id = "submit">`;
-  renderPage(page)
-  console.log('generateQuestion working');
+      <ul>
+        <li class="question">
+          <label for="answerA">${DATA.questions[i].answers[0]}<input type="radio" class="option" id = "answerA" name= "answers" value="${DATA.questions[i].answers[0]}"></label>
+        </li>
+        <li class="question">
+          <label for="answerB">${DATA.questions[i].answers[1]}<input type="radio" class="option" id = "answerB" name = "answers" value="${DATA.questions[i].answers[1]}"></label>
+        </li>
+        <li class="question">
+          <label for="answerC">${DATA.questions[i].answers[2]}<input type="radio" class="option" id = "answerC" name= "answers" value = "${DATA.questions[i].answers[2]}"></label>
+        </li>
+        <li class="question">
+          <label for="answerD">${DATA.questions[i].answers[3]}<input type="radio" class="option" id = "answerD" name = "answers" value="${DATA.questions[i].answers[3]}"><label>
+        </li>
+        <input type = "submit" id = "submit" class="button">
+        </form>`;
+  renderPage(page);
 }
 
 function generateCorrect() {
@@ -164,18 +172,17 @@ function generateCorrect() {
     Correct!!!
   </h1>
   </header>
-  <div>
+  <div class= 'box'>
   <p>
     You got the answer correct. Great job!
   </p>
   <p>youre score is currently ${DATA.score} points</p>
   <p>you are on question ${DATA.questionNumber + 1}/10</p>
+  <input type = "button" id = "next-question" value = 'next' class="button">
 </div>
-<input type = "submit" id = "next-question" value = 'next'>`
+`
 renderPage(page)
   // display HTML for correct answer including a button to go to the next answer
-
-  console.log('generateCorrect working');
 }
 
 function generateWrong() {
@@ -183,18 +190,17 @@ function generateWrong() {
   let i = DATA.questionNumber
   let page = `<header>
   <h1 class = "red">Wrong Answer</h1>
-  <div>
+  </header>
+  <div class='box'>
     <p>
       Sorry that was the Wrong answer the correct answer is ${DATA.questions[i].correctAnswer}
     </p>
     <p>your score is currently ${DATA.score} points</p>
     <p>you are on question ${DATA.questionNumber + 1}/10</p>
+    <input type = "button" id = "next-question" value = 'next' class="button">
   </div>
-  <button>
-</header>
-<input type = "button" id = "next-question" value = 'next'>`
-renderPage(page)
-  console.log('generateWrong working');
+`
+renderPage(page);
 }
 
 function displayScore() {
@@ -206,7 +212,7 @@ function displayScore() {
 <div class="instructions">
 <p >you scored ${DATA.score} points</p>
 <p>press the button start a new quiz</p>
-<input type="button" class="restart" value="reset">
+<input type="button" id="restart" value="reset" class="button">
 </div>`
 renderPage(page)
 }
@@ -214,16 +220,16 @@ renderPage(page)
 // event handlers
 
 function handleQuestionSubmit() {
-  $(document).on('click','.option' ,function(e) {
-    console.log('handleQuestionSubmit WORKING');
-    let id = $(e.target).attr('id');
-    let selectedAnswer = $(`label[for='${id}']`).text().trim();
+  $(document).on('click','#submit' ,function(e) {
+    event.preventDefault()
+    let selectedAnswer = $("[name='answers']:checked").val();
+    console.log(selectedAnswer)
     answerQuestions(selectedAnswer)
     }
   );
 }
 function handleStartQuiz() {
-  $(document).on('click', '.start-quiz', function() {
+  $(document).on('click', '#start-quiz', function() {
     generateQuestion()
   })
 }
@@ -231,7 +237,6 @@ function handleStartQuiz() {
 function handleNextQuestion() {
   $(document).on('click', '#next-question', function(e) {
     DATA.questionNumber++;
-    console.log('handleNextQuestion')
     if (DATA.questionNumber > 9) {
       displayScore()
     } else {generateQuestion()}
@@ -240,7 +245,7 @@ function handleNextQuestion() {
 
 function handleReset() {
   
-  $(document).on('click', '.restart', function(e) {
+  $(document).on('click', '#restart', function(e) {
     reset();
     startScreen();
   })
@@ -252,8 +257,7 @@ function checkAnswer(answer) {
   let correct = DATA.questions[i].correctAnswer
   if (answer === correct) {
     return true
-  } else {return false}
-  console.log('checkAnswer working');
+  } else {return false};
 }  // event selector not working
 
 function updateScore() {
@@ -272,7 +276,6 @@ function answerQuestions(answer) {
   } else {
     generateWrong()
   }
-  console.log('answerQuestions working'); 
   
 }
 
